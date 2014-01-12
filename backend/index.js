@@ -6,9 +6,12 @@ var fs = require('fs');
 var localGit = require("./local_git");
 var server = require("./server");
 var remoteGit = require("./remote_git");
+var config = require("./config")
+
+console.log("starting up!");
 
 server.initServer(function (repository, sha) {
-  var repoConfig = checkRepoList(repository);
+  var repoConfig = config.checkRepoList(repository);
   console.log(repoConfig);
   if (repoConfig) {
     remoteGit.checkBranchesForChanges(repository, sha, repoConfig, handleBranch);
@@ -40,24 +43,6 @@ var executeScript = function (path, repoPath, sha, repository, repoConfig, next)
       next();
     }
   });
-}
-
-var checkRepoList = function (repository) {
-  var sentRepo = repository.owner.name + "/" + repository.name;
-  var repos = require('./repos.json');
-  console.log(repos);
-  var matching = repos.filter(function (repo) {
-    return repo.repo.toLowerCase() === sentRepo.toLowerCase();
-  });
-  console.log(matching);
-
-  if (matching.length === 1) {
-    return matching[0];
-  } else if (matching.length === 0) {
-    console.log("Received request for " + sentRepo + " but no matching repo definition.");
-  } else {
-    console.log("Ambiguous match for " + sentRepo);
-  }
 }
 
 var handleBranch = function (repository, repoConfig, branch) {
