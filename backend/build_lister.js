@@ -5,7 +5,10 @@ var async = require("async");
 var listBuilds = function (repoOwner, repoName, branch, callback) {
   var path = "jobs/" + repoOwner + "/" + repoName + "/" + branch;
   fs.readdir(path, function (err, files) {
-
+    if (!files) {
+      callback([]);
+      return;
+    }
     var filteredFiles = files.filter( function (file) {
       return parseInt(file).toString() === file;
     })
