@@ -50,3 +50,4 @@ var initializeGithubRepo = function (repository, repoConfig) {
 
 exports.checkBranchesForChanges = checkBranchesForChanges;
 exports.updateCommitStatus = updateCommitStatus;
+exports.initializeGithubRepo = initializeGithubRepo;
