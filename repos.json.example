@@ -1,0 +1,10 @@
+[
+  {
+    "repo": "owner/public-repo"
+  },
+  {
+    "repo": "owner/private-repo",
+    "username": "username-with-access",
+    "token": "your-personal-token-here"
+  }
+]
