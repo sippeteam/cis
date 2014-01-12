@@ -6,7 +6,16 @@ var buildLister = require("./build_lister")
 var buildPresenter = require("./build_presenter")
 
 var app = express();
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+  next();
+}
+
 app.use(express.bodyParser());
+app.use(allowCrossDomain);
 
 var repoList = function (owner, callback) {
   var repos = require('./repos.json');
@@ -38,13 +47,15 @@ var initServer = function (onBranchPush) {
   });
 
   app.get('/', function (req, res) {
+    console.log("Root hit");
     repoList(null, function (results) {
       res.send(200, results);
     });
   });
 
   app.get('/:owner', function (req, res) {
-    repoList(req.params.owner, function (results) {
+    console.log("owner hit");
+    repoList(req.params.owner.toLowerCase(), function (results) {
       res.send(200, results);
     });
   });
