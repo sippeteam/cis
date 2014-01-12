@@ -3,10 +3,8 @@ var async = require("async");
 var wrench = require("wrench");
 var uuid = require('node-uuid');
 
-var repo;
-
-
 var cloneOrInit = function (url, path, repoConfig, next) {
+  var repo;
   if (repoConfig.token && repoConfig.username) {
     url = url.replace("https://","https://"+repoConfig.username+":"+repoConfig.token+"@");
   }
