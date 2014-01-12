@@ -29,6 +29,11 @@ var executeScript = function (path, repoPath, sha, repository, repoConfig, next)
         console.log(err);
       }
     });
+    fs.writeFile(path + "/result.json", "{\"status\" : " + status + " }", function (err) {
+      if (err) {
+        console.log(err);
+      }
+    });
     if (repoConfig.token && repoConfig.username) {
       remoteGit.updateCommitStatus(sha, status, repository, repoConfig, next);
     } else {
