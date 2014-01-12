@@ -3,6 +3,7 @@ var express = require("express");
 var remoteGit = require("./remote_git")
 var branchStatus = require("./branch_status")
 var buildLister = require("./build_lister")
+var buildPresenter = require("./build_presenter")
 
 var app = express();
 app.use(express.bodyParser());
@@ -67,7 +68,14 @@ var initServer = function (onBranchPush) {
   });
 
   app.get('/:owner/:repo/:branch/:build', function (req, res) {
+    var repoOwner = req.params.owner;
+    var repoName = req.params.repo;
+    var branch = req.params.branch;
+    var build = req.params.build;
 
+    buildPresenter.build(repoOwner, repoName, branch, build, function (results) {
+      res.send(200, results);
+    });
   });
 
   app.listen(1337);
